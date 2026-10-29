@@ -1,0 +1,178 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { chat, pendingMembers, approvedMembers, guestRoomName } from '../../../components/mockData';
+import '../../../../design/chat.css';
+
+export const prerender = false;
+const { id } = Astro.params;
+---
+<Base title={`Room ${guestRoomName} — Host`} noindex bare>
+  <div class="roombar row row--between">
+    <a class="roombar__back" href="/dashboard">← Dasbor</a>
+    <div class="row roombar__chips" aria-label="Status room">
+      <span class="badge badge--active">AKTIF</span>
+      <span class="pill">sisa 6 hari</span>
+      <span class="pill">12/40 Guest</span>
+      <span class="pill">mengetik aktif</span>
+    </div>
+  </div>
+
+  <div class="grid room-grid">
+    <!-- chat -->
+    <section class="glass-card chat-panel" aria-label={`Percakapan di ${guestRoomName}`}>
+      <div class="chat-head">
+        <h1 class="chat-head__name">{guestRoomName}</h1>
+        <span class="pill">demo #{id}</span>
+      </div>
+      <div class="chat-log">
+        <p class="dy-divider">Hari ini · 14:00 WIB</p>
+        {chat.map((m) => (
+          <article class:list={['msg', { 'msg--host': m.sender === 'HOST' }]}>
+            <span class="msg__meta">{m.name} · {m.time}</span>
+            <p class="msg__bubble">{m.text}</p>
+          </article>
+        ))}
+        <p class="typing">
+          <span class="typing__dots"><i></i><i></i><i></i></span>
+          Ada yang sedang mengetik…
+        </p>
+      </div>
+      <div class="composer">
+        <input class="input" type="text" placeholder="Kirim sebagai Host…" aria-label="Tulis pesan" />
+        <button class="btn btn--primary" type="button">Kirim</button>
+      </div>
+    </section>
+
+    <!-- panel member -->
+    <aside class="glass-card mp" aria-label="Panel member">
+      <h2 class="mp__title">Member <span class="pill">12 approve · 2 nunggu</span></h2>
+
+      <p class="mp__section">Menunggu persetujuan</p>
+      {pendingMembers.map((p) => (
+        <div class="mp__pending-card">
+          <div class="mp__row" style="border-bottom:0;padding-top:0;">
+            <span class="mp__avatar" aria-hidden="true">?</span>
+            <div class="mp__text">
+              <span class="mp__name">Permintaan masuk</span>
+              <span class="mp__meta">{p.requestedAt}</span>
+            </div>
+          </div>
+          <div class="mp__actions">
+            <button class="btn btn--sm btn--brand" type="button">Setujui</button>
+            <button class="btn btn--sm btn--ghost-danger" type="button">Tolak</button>
+          </div>
+        </div>
+      ))}
+
+      <p class="mp__section">Di dalam room</p>
+      <div class="mp__row">
+        <span class="mp__avatar" aria-hidden="true">H</span>
+        <div class="mp__text">
+          <span class="mp__name">Host (kamu)</span>
+          <span class="mp__meta">tidak idle-kick</span>
+        </div>
+      </div>
+      {approvedMembers.map((m) => (
+        <div class="mp__row">
+          <span class="mp__avatar" aria-hidden="true">{m.no}</span>
+          <div class="mp__text">
+            <span class="mp__name">Guest-{m.no}</span>
+            <span class="mp__meta">{m.lastActive}</span>
+          </div>
+          <button class="btn btn--sm btn--ghost-danger" type="button">Keluarkan</button>
+        </div>
+      ))}
+
+      <hr class="mp__rule" />
+      <p class="help">
+        Host hanya melihat nomor Guest. Identitas (akun internal Guest)
+        disimpan terpisah dan tidak pernah ditampilkan di panel ini.
+      </p>
+    </aside>
+  </div>
+
+  <!-- kendali room -->
+  <section class="glass-card controls" aria-label="Kendali room">
+    <h2 class="controls__title">Kendali room</h2>
+    <div class="controls__grid">
+      <div class="controls__block">
+        <p class="mp__section">Password</p>
+        <p class="controls__code">••••••</p>
+        <div class="row">
+          <button class="btn btn--sm btn--ghost" type="button">Ganti password</button>
+          <p class="help">Password baru tampil sekali, versi lama mati otomatis.</p>
+        </div>
+      </div>
+      <div class="controls__block">
+        <p class="mp__section">Arsip</p>
+        <div class="row">
+          <button class="btn btn--sm btn--brand" type="button">Ekspor .txt</button>
+          <p class="help">Baris berformat [DD-MM-YYYY HH:MM] nama: isi (WIB), terbagi halaman.</p>
+        </div>
+      </div>
+      <div class="controls__block">
+        <p class="mp__section">Tutup</p>
+        <div class="row">
+          <button class="btn btn--sm btn--ghost-danger" type="button">Tutup room</button>
+          <p class="help">Setelah ditutup Guest kehilangan akses; arsip tetap 15 hari.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .roombar {
+    justify-content: space-between;
+    margin-bottom: var(--space-3);
+  }
+  .roombar__back {
+    font: 700 0.875rem var(--font-sans);
+    color: var(--teal-strong);
+    text-decoration: none;
+  }
+  .roombar__back:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .roombar__chips { gap: var(--space-2); }
+  .roombar .pill { font-size: calc(var(--step--1) - 1px); padding: 5px 10px; }
+
+  .room-grid {
+    display: grid;
+    gap: var(--space-4);
+    align-items: start;
+  }
+  @media (min-width: 960px) {
+    .room-grid {
+      grid-template-columns: minmax(0, 1.6fr) minmax(280px, 1fr);
+    }
+  }
+
+  .chat-head__name {
+    font-size: var(--step-1);
+    margin: 0;
+  }
+  .chat-head .pill { flex: none; }
+
+  .mp__rule {
+    border: 0;
+    border-top: 1.5px dashed var(--border-dash);
+    width: 100%;
+    margin: var(--space-2) 0;
+  }
+
+  .controls { margin-top: var(--space-4); }
+  .controls__title { font-size: var(--step-1); margin: 0 0 var(--space-3); }
+  .controls__grid {
+    display: grid;
+    gap: var(--space-4);
+  }
+  @media (min-width: 860px) {
+    .controls__grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .controls__code {
+    font: 700 var(--step-0) var(--font-mono);
+    letter-spacing: 0.24em;
+    color: var(--text-muted);
+    margin: 0 0 var(--space-2);
+  }
+  .controls__block .row { flex-direction: column; align-items: flex-start; }
+</style>

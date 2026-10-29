@@ -1,0 +1,12 @@
+dist
+.astro
+.vercel
+node_modules
+package-lock.json
+supabase
+docs
+design
+public
+AGENTS.md
+TASK.md
+TODO.md

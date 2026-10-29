@@ -1,0 +1,223 @@
+---
+import Base from '../layouts/Base.astro';
+import { quota, hostRooms, newRoomPassword } from '../components/mockData';
+
+export const prerender = false;
+---
+<Base title="Dasbor Host — umpomenfess room" noindex>
+  <section class="dash">
+    <div class="row row--between dash__head">
+      <div>
+        <p class="eyebrow">Host · tier {quota.tier}</p>
+        <h1>Dasbor</h1>
+      </div>
+      <a class="btn btn--ghost" href="/rooms">Ruang saya (Guest)</a>
+    </div>
+
+    <!-- kuota -->
+    <div class="quota">
+      <span class="quota__label">Room aktif</span>
+      <div class="quota__track" role="img" aria-label={`${quota.used} dari ${quota.max} room aktif terpakai`}>
+        <div class="quota__fill" style={`width:${(quota.used / quota.max) * 100}%`}></div>
+      </div>
+      <span class="quota__num">{quota.used}/{quota.max}</span>
+    </div>
+
+    <!-- daftar room -->
+    <h2 class="dash__section">Room kamu</h2>
+    <ul class="rooms">
+      {hostRooms.map((room) => (
+        <li class:list={['room', { 'room--closed': room.status === 'CLOSED' }]}>
+          <div class="room__info">
+            <h3>{room.name}</h3>
+            <p class="room__meta">
+              {room.approvedCount}/{room.maxGuests} Guest · {room.endsIn} ·
+              mengetik {room.typingOn ? ' aktif' : ' mati'}
+            </p>
+          </div>
+          <span class:list={['badge', room.status === 'ACTIVE' ? 'badge--active' : 'badge--muted']}>
+            {room.status === 'ACTIVE' ? 'AKTIF' : 'TUTUP'}
+          </span>
+          {room.pendingCount > 0 && (
+            <span class="badge badge--pending">{room.pendingCount} nunggu</span>
+          )}
+          <div class="room__actions">
+            <a class="btn btn--sm btn--brand" href={`/dashboard/r/${room.id}`}>
+              {room.status === 'ACTIVE' ? 'Kelola' : 'Lihat'}
+            </a>
+          </div>
+        </li>
+      ))}
+    </ul>
+
+    <!-- form buat room -->
+    <h2 class="dash__section">Buat room</h2>
+    {quota.used >= quota.max ? (
+      <div class="card quota-full" role="status">
+        <h3>Batas room aktif tercapai ({quota.used}/{quota.max})</h3>
+        <p>
+          Tutup salah satu room biar bisa bikin baru.
+          Pembayaran belum tersedia — semua tier disetel lewat konfigurasi manual.
+        </p>
+      </div>
+    ) : (
+      <form class="glass-card create" method="post" action="/dashboard/rooms" novalidate>
+        <div class="field">
+          <label for="name">Nama room</label>
+          <input class="input" id="name" name="name" type="text" maxlength="80" placeholder="Rapat & Koordinasi KKN" required />
+          <p class="help">Tampak di bar room. Maksimum 80 karakter.</p>
+        </div>
+
+        <div class="field">
+          <label for="capacity">Kapasitas Guest</label>
+          <input id="capacity" name="max_guests" type="range" min="2" max="40" value="16" step="1" />
+          <output class="create__out" for="capacity">16 Guest</output>
+          <p class="help"><strong>Batasmu: 40 (tier Free).</strong> Melebihi batas ini memerlukan tier lebih tinggi.</p>
+        </div>
+
+        <div class="create__toggles">
+          <label class="toggle">
+            <input type="checkbox" name="approval_required" />
+            <span class="toggle__track"></span>
+            <span class="toggle__label">Persetujuan masuk manual</span>
+          </label>
+          <p class="help">Guest menunggu di lobi sampai kamu menyetujui.</p>
+
+          <label class="toggle">
+            <input type="checkbox" name="typing_enabled" checked />
+            <span class="toggle__track"></span>
+            <span class="toggle__label">Indikator mengetik</span>
+          </label>
+          <p class="help">Otomatis mati bila kanal global dimatikan atau kapasitas &gt; 20.</p>
+        </div>
+
+        <div class="field">
+          <label for="idle">Keluarkan Guest yang diam</label>
+          <select class="select" id="idle" name="idle_timeout_minutes">
+            <option value="10">10 menit</option>
+            <option value="30" selected>30 menit</option>
+            <option value="60">60 menit</option>
+            <option value="120">120 menit</option>
+            <option value="240">240 menit</option>
+          </select>
+          <p class="help">Guest yang keluar otomatis bisa masuk lagi tanpa password baru.</p>
+        </div>
+
+        <button class="btn btn--primary btn--block" type="submit" disabled>Buat room</button>
+        <p class="help">Tombol diaktifkan setelah form menerima fungsionalnya (T-51).</p>
+
+        <details class="pwonce">
+          <summary>Lihat panel "password tampil sekali"</summary>
+          <div class="pwonce__panel">
+            <span class="st-tag">✧ password tampil sekali</span>
+            <p class="pwonce__code">{newRoomPassword}</p>
+            <p class="help">Simpan di tempat aman sekarang — tidak bisa ditampilkan lagi.</p>
+            <div class="row">
+              <button class="btn btn--sm btn--ghost" type="button" disabled>Buat baru (ganti versi)</button>
+            </div>
+          </div>
+        </details>
+      </form>
+    )}
+  </section>
+</Base>
+
+<style>
+  .dash { display: flex; flex-direction: column; }
+  .dash__head { align-items: flex-start; margin-bottom: var(--space-5); }
+  .dash h1 { font-size: var(--step-3); margin: 0; }
+
+  .quota {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-3) var(--space-4);
+    box-shadow: var(--shadow-sm);
+    max-width: 480px;
+  }
+  .quota__label { flex: none; font: 700 0.875rem var(--font-sans); color: var(--ink); }
+  .quota__track {
+    flex: 1;
+    height: 10px;
+    border-radius: var(--radius-pill);
+    background: var(--paper);
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .quota__fill { height: 100%; background: var(--teal-strong); border-radius: var(--radius-pill); }
+  .quota__num { flex: none; font: 700 0.875rem var(--font-mono); color: var(--teal-strong); }
+
+  .dash__section {
+    font-size: var(--step-1);
+    margin: var(--space-6) 0 var(--space-3);
+  }
+  .rooms {
+    list-style: none;
+    margin: 0 0 var(--space-4);
+    padding: 0;
+    display: grid;
+    gap: var(--space-3);
+  }
+  .room {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-4);
+    box-shadow: var(--shadow-sm);
+  }
+  .room--closed { opacity: 0.72; }
+  .room__info { flex: 1 1 240px; min-width: 0; }
+  .room__info h3 {
+    font-size: var(--step-0);
+    margin: 0 0 2px;
+  }
+  .room__meta { margin: 0; font-size: var(--step--1); color: var(--text-muted); }
+  .room__actions { margin-left: auto; }
+
+  .quota-full h3 { font-size: var(--step-1); margin-bottom: var(--space-2); }
+  .quota-full p { margin: 0; color: var(--ink-soft); }
+
+  .create { display: flex; flex-direction: column; gap: var(--space-4); max-width: 560px; }
+  .create .field { margin-bottom: 0; }
+  .create__out {
+    font: 700 var(--step-0) var(--font-mono);
+    color: var(--teal-strong);
+  }
+  .create__toggles {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    border: 1.5px dashed var(--border-dash);
+    border-radius: var(--radius-sm);
+    padding: var(--space-3);
+  }
+  .pwonce { margin-top: var(--space-2); }
+  .pwonce summary {
+    cursor: pointer;
+    font: 700 0.875rem var(--font-sans);
+    color: var(--teal-strong);
+  }
+  .pwonce__panel {
+    margin-top: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    border: 1.5px dashed var(--border-dash);
+    border-radius: var(--radius-sm);
+    padding: var(--space-4);
+  }
+  .pwonce__code {
+    margin: 0;
+    font: 700 var(--step-2) var(--font-mono);
+    letter-spacing: 0.3em;
+    color: var(--ink);
+  }
+</style>

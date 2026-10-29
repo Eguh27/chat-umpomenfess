@@ -1,0 +1,13 @@
+name: keepalive
+# Supabase free mem-pause proyek setelah 7 hari tanpa aktivitas.
+# Catatan: GitHub menonaktifkan workflow terjadwal di repo PUBLIK yang tidak ada aktivitas 60 hari.
+on:
+  schedule:
+    - cron: '0 3 * * 1,4' # Senin & Kamis 03:00 UTC
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping health + DB
+        run: curl -fsS --retry 3 "${{ secrets.SITE_URL }}/api/health?db=1"

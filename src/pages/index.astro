@@ -1,0 +1,246 @@
+---
+import Base from '../layouts/Base.astro';
+import StickerDecor from '../components/StickerDecor.astro';
+import '../../design/chat.css';
+
+const main = 'https://umpomenfess.my.id';
+const steps = [
+  {
+    title: 'Host bikin room',
+    body: 'Pilih kapasitas 2–40 Guest, perlu persetujuan atau langsung masuk, jeda idle, dan izinkan indikator mengetik.',
+  },
+  {
+    title: 'Bagikan link + password',
+    body: 'Password enam karakter tampil sekali berupa huruf dan angka yang tidak mirip (tanpa 0/O, 1/I). Guest masuk tanpa membuat akun, tampil sebagai Guest-01, Guest-02, dst.',
+  },
+  {
+    title: 'Room menutup sendiri',
+    body: 'Aktif 7 hari, tetap terbaca untuk Host 15 hari (bisa diekspor ke .txt), setelah itu dihapus permanen — tidak ada yang menumpuk.',
+  },
+];
+---
+<Base
+  title="umpomenfess room — ruang obrolan anonim berbatas waktu"
+  description="Buat room chat anonim untuk civitas UMPO: satu link, satu password enam karakter. Guest tanpa akun, room hidup 7 hari, lalu dihapus permanen."
+>
+
+  <section class="hero">
+    <div class="hero__copy">
+      <p class="eyebrow">room.umpomenfess.my.id</p>
+      <h1>Room chat anonim dalam enam karakter.</h1>
+      <p class="hero__lead">
+        Host membuat room, membagikan link plus password enam karakter.
+        Guest masuk tanpa akun sebagai Guest-01, Guest-02, dst. Obrolan tampil
+        sebagai teks — tidak bisa mengirim gambar, file, atau tautan pelacakan.
+      </p>
+      <div class="row">
+        <a class="btn btn--primary" href="/login">Masuk sebagai Host</a>
+        <a class="btn btn--ghost" href="/r/demo">Pratinjau room Guest</a>
+      </div>
+      <ul class="hero__meta" aria-label="Ringkasan aturan">
+        <li>7 hari aktif, 15 hari arsip</li>
+        <li>Guest tanpa akun</li>
+        <li>Password tampil sekali</li>
+      </ul>
+    </div>
+
+    <div class="hero__stage" aria-hidden="true">
+      <div class="st-scene">
+        <StickerDecor variant="spark" style="position:absolute; top:-2%; left:4%; width:38px;" />
+        <StickerDecor variant="chat" style="position:absolute; top:2%; right:2%; width:46px; transform:rotate(7deg);" />
+        <StickerDecor variant="photo" style="position:absolute; bottom:0; left:-2%; width:56px; transform:rotate(-8deg);" />
+        <StickerDecor variant="envelope" style="position:absolute; bottom:-4%; right:4%; width:50px; transform:rotate(-6deg);" />
+
+        <div class="st-glass hero__panel">
+          <span class="st-tag">✧ pesan masuk</span>
+          <div class="chat-preview">
+            <div class="msg">
+              <span class="msg__meta">Guest-01</span>
+              <p class="msg__bubble">Terima kasih roomnya, koordinasi jadi jauh lebih gampang.</p>
+            </div>
+            <div class="msg msg--host">
+              <span class="msg__meta">Host</span>
+              <p class="msg__bubble">Dengan senang hati. Link ini aktif seminggu ya.</p>
+            </div>
+            <div class="typing">
+              <span class="typing__dots"><i></i><i></i><i></i></span>
+              Ada yang sedang mengetik…
+            </div>
+          </div>
+          <div class="hero__panel-foot">
+            <span class="hero-code">K3TX9M</span>
+            <span class="hero-handle">@umpomenfess</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cara" class="how">
+    <h2>Cara kerja</h2>
+    <ol class="how__list">
+      {steps.map((s) => (
+        <li class="how__item">
+          <span class="how__num" aria-hidden="true">{steps.indexOf(s) + 1}</span>
+          <div>
+            <h3>{s.title}</h3>
+            <p>{s.body}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="roles">
+    <h2>Dua peran, satu tanggung jawab</h2>
+    <div class="grid--2">
+      <article class="card role-card">
+        <span class="st-tag">✧ Host</span>
+        <h3>Moderator room</h3>
+        <p>
+          Verifikasi Guest yang menunggu, keluarkan pelanggar, tutup room lebih
+          awal. Melihat anggota hanya sebagai nomor — sistem tidak pernah
+          menyerahkan identitas Guest kepada Host.
+        </p>
+        <p class="help">Batas tier Free: 3 room aktif, maksimum 40 Guest per room.</p>
+        <a class="btn btn--primary" href="/register">Buat akun Host</a>
+      </article>
+      <article class="glass-card role-card">
+        <span class="st-tag">✧ Guest</span>
+        <h3>Tanpa akun, tanpa nama</h3>
+        <p>
+          Masuk lewat link room dengan password, tampil sebagai nomor.
+          Kalau tidak ikut aktif, kamu keluar otomatis biar kursi tidak
+          monopoli — cukup tekan <strong>Masuk lagi</strong>.
+        </p>
+        <p class="help">Satu browser bisa mengikuti sampai 5 room sekaligus.</p>
+        <a class="btn btn--brand" href="/r/demo">Coba pratinjau</a>
+      </article>
+    </div>
+    <p class="roles__note">
+      Bagian dari ekosistem <a href={main} aria-label="Menfess, situs utama">umpomenfess.my.id ↗</a>.
+      Baca <a href="/privasi">privasi</a> dan <a href="/batas-anonimitas">batas anonimitas</a> sebelum membagi room.
+    </p>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    display: grid;
+    gap: var(--space-7);
+    align-items: center;
+    padding-top: var(--space-4);
+  }
+  @media (min-width: 960px) {
+    .hero { grid-template-columns: 1.05fr 0.95fr; }
+  }
+  .hero h1 {
+    font-size: clamp(var(--step-3), 5.2vw, var(--step-4) + 0.35rem);
+    letter-spacing: -0.01em;
+    margin-bottom: var(--space-3);
+  }
+  .hero__lead {
+    font-size: var(--step-1);
+    color: var(--ink-soft);
+    margin: 0 0 var(--space-5);
+    max-width: 34em;
+  }
+  .hero__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    padding: 0;
+    margin: var(--space-5) 0 0;
+  }
+  .hero__meta li {
+    font: 700 var(--step--1) var(--font-sans);
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    padding: 6px 12px;
+  }
+
+  .hero__stage { position: relative; }
+  .st-scene {
+    position: relative;
+    max-width: 400px;
+    margin: var(--space-5) auto 0;
+    padding: var(--space-5) var(--space-4) var(--space-6);
+  }
+  .hero__panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .chat-preview {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .msg__bubble { margin: 0; }
+  .hero__panel-foot {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding-top: var(--space-3);
+    border-top: 1.5px dashed var(--border-dash);
+  }
+  .hero-code {
+    font: 700 0.875rem var(--font-mono);
+    color: var(--teal-strong);
+    letter-spacing: 0.24em;
+  }
+  .hero-handle {
+    font: 700 var(--step--1) var(--font-sans);
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+  }
+
+  .how { margin-top: var(--space-8); }
+  .how h2 { font-size: var(--step-2); }
+  .how__list { list-style: none; margin: 0; padding: 0; }
+  .how__item {
+    display: flex;
+    gap: var(--space-4);
+    padding: var(--space-4) 0;
+    border-bottom: 1.5px dashed var(--border-dash);
+  }
+  .how__item:last-child { border-bottom: 0; }
+  .how__num {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 1.5px solid var(--border);
+    font: 700 var(--step-1) / 1 var(--font-display);
+    color: var(--teal-strong);
+  }
+  .how__item h3 {
+    font-size: var(--step-1);
+    margin-bottom: 4px;
+  }
+  .how__item p {
+    margin: 0;
+    color: var(--ink-soft);
+    max-width: 44em;
+  }
+
+  .roles { margin-top: var(--space-8); }
+  .roles h2 { font-size: var(--step-2); }
+  .role-card { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+  .role-card h3 { margin: 0; font-size: var(--step-1); }
+  .role-card p { margin: 0; color: var(--ink-soft); }
+  .role-card .btn { margin-top: var(--space-2); }
+  .roles__note {
+    margin: var(--space-5) 0 0;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+</style>

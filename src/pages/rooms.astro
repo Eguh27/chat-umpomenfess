@@ -1,0 +1,95 @@
+---
+import Base from '../layouts/Base.astro';
+import { myRooms } from '../components/mockData';
+---
+<Base title="Ruang saya — umpomenfess room" noindex>
+  <section class="narrow myrooms">
+    <p class="eyebrow">Guest · tanpa akun</p>
+    <h1>Ruang saya</h1>
+    <p class="myrooms__sub">
+      Daftar room yang kamu ikuti di browser ini. Datanya hidup di perangkat —
+      bukan di akun, karena Guest memang tidak punya akun.
+    </p>
+
+    <ul class="rooms">
+      {myRooms.map((room) => (
+        <li class="room">
+          <div class="room__info">
+            <h3>{room.name}</h3>
+            <p class="room__meta">
+              {room.endsIn}
+              {room.displayName && ` · kamu: ${room.displayName}`}
+            </p>
+          </div>
+          {
+            room.status === 'APPROVED' ? (
+              <span class="badge badge--active">{room.unread} belum dibaca</span>
+            ) : (
+              <span class="badge badge--pending">nunggu setuju</span>
+            )
+          }
+          <div class="room__actions">
+            {
+              room.status === 'APPROVED' ? (
+                <a class="btn btn--sm btn--brand" href={`/r/${room.slug}?state=chat`}>Buka</a>
+              ) : (
+                <button class="btn btn--sm btn--ghost" type="button" disabled>Tunggu</button>
+              )
+            }
+          </div>
+        </li>
+      ))}
+    </ul>
+
+    <div class="card warn">
+      <h2>Tentang penanda "belum dibaca"</h2>
+      <p>
+        Ditampung di penyimpanan lokal browser (localStorage). Penanda hilang kalau:
+      </p>
+      <ul>
+        <li>kamu membersihkan data situs (storage lokal ikut terhapus),</li>
+        <li>berganti perangkat atau browser,</li>
+        <li>atau browser menyingkirkan data situs yang lama tidak dibuka
+          (Safari kira-kira tujuh hari).</li>
+      </ul>
+      <p class="help">
+        Keanggotaanmu tetap tersimpan di server — room bisa dibuka ulang lewat
+        link yang sama; penanda belum dibaca mulai dari nol.
+      </p>
+      <p class="help">Pratinjau statis (T-31). Daftar nyata memakai RPC my_rooms saat T-54.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .myrooms { padding-top: var(--space-4); }
+  .myrooms h1 { font-size: var(--step-3); margin-bottom: var(--space-2); }
+  .myrooms__sub { color: var(--ink-soft); margin: 0 0 var(--space-5); }
+
+  .rooms {
+    list-style: none;
+    margin: 0 0 var(--space-6);
+    padding: 0;
+    display: grid;
+    gap: var(--space-3);
+  }
+  .room {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-4);
+    box-shadow: var(--shadow-sm);
+  }
+  .room__info { flex: 1 1 220px; min-width: 0; }
+  .room__info h3 { font-size: var(--step-0); margin: 0 0 2px; }
+  .room__meta { margin: 0; font-size: var(--step--1); color: var(--text-muted); }
+  .room__actions { margin-left: auto; }
+
+  .warn h2 { font-size: var(--step-1); margin-bottom: var(--space-2); }
+  .warn p { color: var(--ink-soft); }
+  .warn ul { margin: var(--space-2) 0; padding-left: 1.2em; color: var(--ink-soft); display: grid; gap: 4px; }
+</style>

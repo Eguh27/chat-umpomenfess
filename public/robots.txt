@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /r/
+Disallow: /dashboard
+Disallow: /rooms
+Disallow: /api/

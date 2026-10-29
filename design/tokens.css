@@ -1,0 +1,114 @@
+/*
+  design/tokens.css — satu sumber gaya project room (room.umpomenfess.my.id).
+
+  Arah: "Stiker Tempel" — papan mint dengan panel kaca miring ala stiker
+  tempelan. DNA diambil dari template `Stiker` BAWAAN situs utama
+  (umpomenfess/src/styles/templates.css, section `.tpl-stiker`), bukan preset:
+    gradasi bawaan --st1/--st2 #DFF2EC → #BFE5DA   → --mint-1 / --mint-2
+    ink teks  #1F4D46                             → --ink
+    panel kaca rgba(255,255,255,.55), rotate(-1.6deg), radius 26
+    stiker: oranye #F5A54B (chat), koral #E8604C (surat), cream #FBF3E4
+            (foto), percik emas #F6C96B
+    tag "✧ pesan masuk" #3D8A7C (DEKORASI saja: 4.10 di putih)
+    Baloo 2 (display) + Quicksand (isi) + Space Mono (kode password)
+
+  Kontras terverifikasi (normal teks ≥4.5):
+    ink/mint-1 8.17 · ink/mint-2 6.99 · muted/mint-2 4.88 · muted/putih ≥6.05
+    krem/coral-strong 5.09 (putih 5.44) · krem/teal-deep 7.71 · ink/gold 6.11
+
+  Hanya tema terang — DNA stiker memang latar terang; dark mode disengaja
+  tidak dibuat (tulis keputusan desain di design/README.md). Ekspor token
+  Figma (T-30) menimpa nilai di sini bila kelak ada.
+*/
+:root {
+  color-scheme: light;
+
+  /* Palet Stiker bawaan */
+  --mint-1: #dff2ec;
+  --mint-2: #bfe5da;
+  --paper: #fbf3e4;
+  --ink: #1f4d46;
+  --ink-soft: #35655a;
+
+  --coral: #e8604c;        /* dekorasi / elemen besar */
+  --coral-strong: #b8422e; /* tombol & teks aksen (≥4.5) */
+  --coral-hover: #9e3626;
+  --orange: #f5a54b;
+  --gold: #f6c96b;
+  --teal: #3d8a7c;         /* dekorasi/large saja */
+  --teal-strong: #2a6053;  /* teks & CTA sekunder */
+  --teal-deep: #24574d;
+
+  /* Peran permukaan */
+  --bg: var(--mint-1);
+  --bg-gradient: linear-gradient(180deg, var(--mint-1) 0%, var(--mint-2) 100%);
+  --surface: #ffffff;
+  --surface-glass: rgba(255, 255, 255, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.9);
+  --nav-bg: rgba(255, 255, 255, 0.62);
+  --border: rgba(31, 77, 70, 0.14);
+  --border-dash: rgba(31, 77, 70, 0.28); /* garis putus-putus alat tulis */
+  --cream: #fff6ea;
+
+  /* Teks */
+  --text: var(--ink);
+  --text-muted: var(--ink-soft);
+
+  /* Aksi */
+  --brand: var(--teal-strong);
+  --brand-strong: var(--teal-deep);
+  --on-brand: #fff6ea;
+  --accent: var(--coral-strong);
+  --accent-hover: var(--coral-hover);
+  --on-accent: #fff6ea;
+  --accent-soft: rgba(232, 96, 76, 0.13);
+  --focus: var(--teal-strong);
+
+  /* Status */
+  --pending-bg: var(--gold);
+  --pending-ink: var(--ink); /* 6.11 di gold */
+  --ok-bg: var(--teal-deep);
+  --ok-ink: #fff6ea;         /* 7.71 di teal-deep */
+  --danger: var(--coral-strong);
+  --danger-soft: rgba(232, 96, 76, 0.13);
+  --ok-soft: rgba(42, 96, 83, 0.12);
+
+  /* Bayangan (DNA st-glass & st-tag) */
+  --shadow: 0 20px 44px rgba(23, 68, 61, 0.15);
+  --shadow-sm: 0 8px 20px rgba(23, 68, 61, 0.1);
+  --shadow-sticker: 0 4px 10px rgba(31, 77, 70, 0.12);
+
+  /* Tipografi */
+  --font-display: "Baloo 2", "Quicksand", sans-serif;
+  --font-sans: "Quicksand", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Skala tipe — rasio 1.2 */
+  --step--1: 0.833rem;
+  --step-0: 1rem;
+  --step-1: 1.2rem;
+  --step-2: 1.44rem;
+  --step-3: 1.728rem;
+  --step-4: 2.074rem;
+
+  /* Spasi — selaras situs form (satu irama antar-subsite) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 72px;
+
+  /* Bentuk */
+  --radius-sm: 10px;   /* stiker rect rx 10-12 */
+  --radius: 16px;      /* kartu & input */
+  --radius-glass: 26px; /* panel kaca DNA st-glass */
+  --radius-pill: 999px;
+  --tilt: -1.6deg;     /* kemiringan panel kaca DNA */
+
+  --container: 1160px;
+  --header-h: 64px;
+  --meta-theme: #dff2ec;
+}

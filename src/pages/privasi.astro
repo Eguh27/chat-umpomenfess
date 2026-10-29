@@ -1,0 +1,92 @@
+---
+import Base from '../layouts/Base.astro';
+
+export const prerender = false;
+const main = 'https://umpomenfess.my.id';
+---
+<Base title="Privasi — umpomenfess room">
+  <article class="narrow policy">
+    <p class="eyebrow">kebijakan</p>
+    <h1>Privasi</h1>
+    <p class="policy__sub">
+      Ringkasan jujur tentang data yang lalui room ini. Baca bersama
+      <a href="/batas-anonimitas">batas anonimitas</a>.
+    </p>
+
+    <h2>Yang disimpan</h2>
+    <ul>
+      <li><strong>Isi pesan dan nomor Guest</strong> di database Supabase
+        selama room aktif (7 hari) plus 15 hari arsip, lalu dihapus permanen
+        beserta subjek room.</li>
+      <li><strong>Password room</strong> disimpan berupa hash, bukan teks asli.
+        Password tampil sekali saat dibuat atau diganti.</li>
+      <li><strong>Alamat jaringan (IP) dalam versi hash</strong> untuk melawan
+        tebak-tebakan password — hash HMAC, alamat aslinya tidak pernah
+        disimpan atau ditulis di log aplikasi. Untuk koneksi IPv6, satu subnet
+        (/64) menghasilkan hash yang sama. Catatan gagal password ini
+        digusur dari database setelah 24 jam.</li>
+      <li><strong>Akun Host</strong> (email, password ter-hash, tier) selama
+        akun masih ada. Menambahkan akun artinya menambah data.</li>
+    </ul>
+
+    <h2>Yang disimpan di browsermu</h2>
+    <ul>
+      <li><strong>Sesi anonim</strong> untuk mengabstraksi tiap Guest — ini
+        yang membuat nomormu (Guest-01, dst.) tetap sama saat balik ke room.
+        Hilang bila storage situs dibersihkan.</li>
+      <li><strong>Penanda room yang sudah dibaca</strong> di
+        <code>localStorage</code> supaya daftar "Ruang saya" menandai pesan
+        baru.</li>
+    </ul>
+
+    <h2>Yang tidak pernah diberikan ke Host</h2>
+    <p>
+      Identitas Guest (akun internal per browser) disimpan di tabel terpisah
+      yang tidak pernah terbaca Host — termasuk lewat daftar member maupun
+      pesan. Host hanya menampung Guest-01, Guest-02, dst.
+    </p>
+
+    <h2>Tulis lewat fungsi, bukan pintu terbuka</h2>
+    <p>
+      Semua penulisan data lewat satu pintu: fungsi tertutup di database.
+      Tabel inti tidak mengizinkan client menambah, mengubah, atau menghapus
+      langsung — Guest hanya bisa menyentuh room yang diikutinya.
+    </p>
+
+    <h2>Pihak ketiga yang bekerja di halaman ini</h2>
+    <ul>
+      <li><strong>Supabase</strong> (database, otentikasi anonim, Realtime)
+        dan <strong>Vercel</strong> (hosting) menjalankan layanan ini.</li>
+      <li><strong>Cloudflare Turnstile</strong> dicek sekali saat masuk room
+        untuk memastikan manusia, bukan bot. Widget ini tidak membaca isi
+        percakapan — hanya halaman masuk yang menyentuhnya.</li>
+      <li><strong>Google Fonts</strong> menyuguhi huruf-huruf situs (font ke
+        browsermu, bukan sebaliknya).</li>
+    </ul>
+
+    <h2>Yang berada di luar kendali aplikasi</h2>
+    <p>
+      Layanan infrastruktur di atas menyimpan log teknis sesuai kebijakan
+      mereka masing-masing, seperti catatan alamat jaringan di level
+      jaringan. Log itu tidak murni milik aplikasi ini; sifatnya samar dan
+      tidak berisi isi percakapan.
+    </p>
+    <p>
+      Situs <a href={main} aria-label="Menfess, situs utama">umpomenfess.my.id ↗</a>
+      beroperasi terpisah; kebijakan masing-masing subsite tidak saling menetapkan.
+    </p>
+  </article>
+</Base>
+
+<style>
+  .policy { padding-top: var(--space-5); }
+  .policy h1 { font-size: var(--step-3); margin-bottom: var(--space-2); }
+  .policy__sub { color: var(--ink-soft); margin: 0 0 var(--space-5); }
+  .policy h2 {
+    font-size: var(--step-1);
+    margin: var(--space-5) 0 var(--space-2);
+  }
+  .policy ul { margin: 0; padding-left: 1.2em; display: grid; gap: var(--space-2); color: var(--ink-soft); }
+  .policy ul strong { color: var(--ink); }
+  .policy p { color: var(--ink-soft); }
+</style>

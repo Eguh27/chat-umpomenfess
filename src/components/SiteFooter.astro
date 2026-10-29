@@ -1,0 +1,79 @@
+---
+const main = 'https://umpomenfess.my.id';
+---
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__top">
+      <div class="site-footer__brand">
+        <p class="site-footer__name">umpomenfess <span>room</span></p>
+        <p class="site-footer__line">
+          Room chat anonim untuk obrolan berbatas waktu: aktif 7 hari, arsip 15 hari,
+          lalu dihapus permanen. Bagian ekosistem UMPOMENFESS.
+        </p>
+      </div>
+      <nav class="site-footer__links" aria-label="Navigasi footer">
+        <a href="/dashboard">Dasbor Host</a>
+        <a href="/rooms">Ruang saya</a>
+        <a href="/privasi">Privasi</a>
+        <a href="/batas-anonimitas">Batas anonimitas</a>
+        <a href={main} aria-label="Menfess, situs utama">Menfess utama ↗</a>
+      </nav>
+    </div>
+    <div class="site-footer__bottom">© 2026 umpomenfess — room.umpomenfess.my.id</div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: var(--space-8);
+    border-top: 1.5px dashed var(--border-dash);
+    background: rgba(255, 255, 255, 0.35);
+  }
+  .site-footer__top {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+    justify-content: space-between;
+    padding: var(--space-6) 0;
+  }
+  .site-footer__brand {
+    max-width: 420px;
+  }
+  .site-footer__name {
+    font: 700 var(--step-1) / 1.2 var(--font-display);
+    color: var(--ink);
+    margin: 0 0 var(--space-2);
+  }
+  .site-footer__name span {
+    font-family: var(--font-sans);
+    font-size: var(--step--1);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--teal-strong);
+  }
+  .site-footer__line {
+    margin: 0;
+    font-size: var(--step--1);
+    color: var(--text-muted);
+  }
+  .site-footer__links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .site-footer__links a {
+    font: 700 0.875rem var(--font-sans);
+    color: var(--teal-strong);
+    text-decoration: none;
+  }
+  .site-footer__links a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .site-footer__bottom {
+    padding: var(--space-3) 0 var(--space-4);
+    border-top: 1px dashed var(--border-dash);
+    font-size: var(--step--1);
+    color: var(--text-muted);
+  }
+</style>

@@ -1,0 +1,71 @@
+---
+import Base from '../layouts/Base.astro';
+
+export const prerender = false;
+---
+<Base title="Batas anonimitas — umpomenfess room">
+  <article class="narrow policy">
+    <p class="eyebrow">kebijakan</p>
+    <h1>Batas anonimitas</h1>
+    <p class="policy__sub">
+      Anonim di sini berarti "tanpa nama", bukan "tanpa jejak". Ini daftarnya,
+      tanpa dibungkus rapi-rapi.
+    </p>
+
+    <h2>Kamu anonim dari siapa?</h2>
+    <ul>
+      <li><strong>Dari Guest lain:</strong> tampil sebagai Guest-01 dan seterusnya.
+        Keanggotaan antar-room tidak disebar ke siapa pun.</li>
+      <li><strong>Dari Host:</strong> identitas akun Guest disimpan di tabel
+        terpisah yang tidak pernah muncul di panel Host atau daftar member.</li>
+      <li><strong>Yang tetap melihat semuanya:</strong> admin database — layaknya
+        semua layanan tanpa enkripsi ujung-ke-ujung. Percakapan sensitif tidak
+        seharusnya lalui sini.</li>
+    </ul>
+
+    <h2>Jejak yang tetap ada</h2>
+    <ul>
+      <li>Alamat jaringan (IP) disimpan berupa hash (HMAC; koneksi IPv6
+        disamakan per subnet) untuk menghentikan tebak password bertubi-tubi;
+        catatannya digusur dari database setelah 24 jam dan alamat aslinya
+        tidak tersimpan.</li>
+      <li>Saat masuk room, Cloudflare Turnstile dicek untuk memastikan kamu
+        manusia — widget ini sedap melihat halaman masuk saja, bukan isi
+        percakapan.</li>
+      <li>Log infrastruktur (host, CDN, penyedia database) di luar aplikasi.</li>
+      <li>Isi percakapan bisa dibaca Host dan admin database sampai room dihapus.</li>
+    </ul>
+
+    <h2>Batas teknis yang perlu kamu tahu</h2>
+    <ul>
+      <li>Pesan berupa teks. <strong>Screenshot bisa membuka identitasmu</strong>
+        — teks anonim tetap bisa berakhir di luar room.</li>
+      <li>Tidak ada enkripsi ujung-ke-ujung. Bila butuh kerahasiaan penuh,
+        pakai alat yang diperuntukkan itu.</li>
+      <li>Keanggotaan hidup di perangkat: penanda belum-dibaca bisa hilang saat
+        data situs dibersihkan. Ini bukan pelacakan — justru sebaliknya.</li>
+      <li>Tidak ada penautan identitas antar-perangkat; akun Guest di satu
+        browser tidak menyatu dengan browser lain.</li>
+    </ul>
+
+    <h2>Penyalahgunaan</h2>
+    <p>
+      Moderasi dilakukan Host lewat persetujuan dan pencegahan. Proses pelaporan
+      pelanggaran kepada pengelola platform belum tersedia di versi ini —
+      mulai saja dari menutup room dan mengeluarkan pelanggar.
+    </p>
+  </article>
+</Base>
+
+<style>
+  .policy { padding-top: var(--space-5); }
+  .policy h1 { font-size: var(--step-3); margin-bottom: var(--space-2); }
+  .policy__sub { color: var(--ink-soft); margin: 0 0 var(--space-5); }
+  .policy h2 {
+    font-size: var(--step-1);
+    margin: var(--space-5) 0 var(--space-2);
+  }
+  .policy ul { margin: 0; padding-left: 1.2em; display: grid; gap: var(--space-2); color: var(--ink-soft); }
+  .policy ul strong { color: var(--ink); }
+  .policy p { color: var(--ink-soft); }
+</style>

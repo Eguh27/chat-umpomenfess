@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Masuk Host — umpomenfess room" noindex>
+  <section class="narrow auth">
+    <p class="eyebrow">akun Host</p>
+    <h1>Masuk</h1>
+    <p class="auth__sub">
+      Masuk dengan akun Host untuk membuat dan mengelola room.
+      Guest tidak butuh akun — masuk lewat link dari Host.
+    </p>
+
+    <form class="glass-card auth__card" method="post" action="/login" novalidate>
+      <div class="field">
+        <label for="email">Email</label>
+        <input class="input" type="email" id="email" name="email" autocomplete="email" required />
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input class="input" type="password" id="password" name="password" autocomplete="current-password" required />
+        <p class="help">Bukan password room — password room dibagikan Host lewat link.</p>
+      </div>
+      <div class="turnstile-ph" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.4-3 8.4-7 9.6-4-1.2-7-5.2-7-9.6V6z"/><path d="M9.5 12l1.8 1.8L15 10"/></svg>
+        Widget Turnstile — placeholder (T-50)
+      </div>
+      <button class="btn btn--primary btn--block" type="submit" disabled> Masuk</button>
+      <p class="help">Tombol diaktifkan setelah Turnstile terpasang pada T-50.</p>
+    </form>
+
+    <p class="auth__alt">
+      Belum punya akun? <a href="/register">Daftar Host</a> ·
+      Dapat link room? <strong>Guest cukup membuka link itu</strong>.
+    </p>
+  </section>
+</Base>
+
+<style>
+  .auth { padding-top: var(--space-5); }
+  .auth h1 { font-size: var(--step-3); margin-bottom: var(--space-2); }
+  .auth__sub { color: var(--ink-soft); margin: 0 0 var(--space-5); }
+  .auth__card { display: flex; flex-direction: column; gap: var(--space-3); max-width: 460px; }
+  .auth__card .field { margin-bottom: 0; }
+  .auth__alt { margin-top: var(--space-5); font-size: 0.875rem; color: var(--text-muted); }
+</style>
